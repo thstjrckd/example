@@ -8,6 +8,7 @@ public class App {
 		
 		System.out.println("----------------------");
 		System.out.println("영환 수정");
+		System.out.println("배가 붚러서 졸리다...");
 	}
 
 }
