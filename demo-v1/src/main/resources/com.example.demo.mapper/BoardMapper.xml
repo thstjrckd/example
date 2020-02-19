@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.BoardMapper">
+	
+	<insert id="insertBoard" parameterType="com.springdemo.bootboard.vo.Board"
+			useGeneratedKeys="true" keyColumn="board_idx" keyProperty="boardIdx">
+		<![CDATA[
+		INSERT INTO tbl_board 
+		(title, contents, creater_id) 
+		VALUES 
+		(#{title}, #{contents}, #{createrId} ) 
+		]]>
+	</insert>
+	
+	<!-- <resultMap></resultMap> 을 통해서 server와 vo 를 일치시킴 -->
+	<!-- application 에 mybatis.configuration.map-underscore-to-camel-case=true 를  등록 및 batabaseConfig에 등록해서 자동으로 인식시킴 -->
+	
+	<select id="selectBoardList" resultType="com.springdemo.bootboard.vo.Board">
+		<![CDATA[
+		SELECT board_idx, title, created_datetime, creater_id, hit_count  
+		FROM tbl_board 
+		WHERE deleted_yn = 'n' 
+		ORDER BY board_idx DESC
+		]]>
+	</select>
+	
+	<select id="selectBoardByBoardIdx" parameterType="int" resultType="com.springdemo.bootboard.vo.Board">
+	<![CDATA[
+		SELECT board_idx, title, contents, created_datetime, creater_id, hit_count, updated_datetime  
+		FROM tbl_board 
+		WHERE board_idx = #{boardIdx}
+		]]>
+	
+	</select>
+	
+	<update id="updateBoard" parameterType="com.springdemo.bootboard.vo.Board">
+		<![CDATA[
+		UPDATE tbl_board 
+		SET title = #{title}, contents = #{contents},  updated_datetime = now() 
+		WHERE board_idx = #{boardIdx} 
+		]]>
+	</update>
+	
+	<update id="deleteBoard" parameterType="com.springdemo.bootboard.vo.Board">
+		<![CDATA[
+		UPDATE tbl_board 
+		SET deleted_yn = 'y'
+		WHERE board_idx = #{boardIdx} 
+		]]>
+	
+	</update>
+	
+</mapper>
